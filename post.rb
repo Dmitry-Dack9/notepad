@@ -32,7 +32,7 @@ class Post
   end
 
   def self.post_types
-    {"Memo" => Memo, "Link" => Link, "Task" => Task}
+    {"Memo" => Memo, "Task" => Task, "Link" => Link}
   end
 
   def self.create(type)
@@ -120,49 +120,49 @@ class Post
         post
       end
     else
-      # # Если нам не передали идентификатор поста (вместо него передали nil),
-      # # то нам надо найти все посты указанного типа (если в метод передали
-      # # переменную type).
+      # Если нам не передали идентификатор поста (вместо него передали nil),
+      # то нам надо найти все посты указанного типа (если в метод передали
+      # переменную type).
 
-      # # Но для начала скажем нашему объекту соединения, что результаты не нужно
-      # # преобразовывать к хэшу.
-      # db.results_as_hash = false
+      # Но для начала скажем нашему объекту соединения, что результаты не нужно
+      # преобразовывать к хэшу.
+      db.results_as_hash = false
 
-      # # Формируем запрос в базу с нужными условиями: начнем с того, что нам
-      # # нужны все посты, включая идентификатор из таблицы posts.
-      # query = 'SELECT rowid, * FROM posts '
+      # Формируем запрос в базу с нужными условиями: начнем с того, что нам
+      # нужны все посты, включая идентификатор из таблицы posts.
+      query = 'SELECT rowid, * FROM posts '
 
-      # # Если задан тип постов, надо добавить условие на значение поля type
-      # query += 'WHERE type = :type ' unless type.nil?
+      # Если задан тип постов, надо добавить условие на значение поля type
+      query += 'WHERE type = :type ' unless type.nil?
 
-      # # Сортировка — самые свежие в начале
-      # query += 'ORDER by rowid DESC '
+      # Сортировка — самые свежие в начале
+      query += 'ORDER by rowid DESC '
 
-      # # Если задано ограничение на количество постов, добавляем условие LIMIT в
-      # # самом конце
-      # query += 'LIMIT :limit ' unless limit.nil?
+      # Если задано ограничение на количество постов, добавляем условие LIMIT в
+      # самом конце
+      query += 'LIMIT :limit ' unless limit.nil?
 
-      # # Готовим запрос в базу, как плов :)
-      # statement = db.prepare query
+      # Готовим запрос в базу, как плов :)
+      statement = db.prepare query
 
-      # # Загружаем в запрос тип вместо плейсхолдера :type, добавляем лук :)
-      # statement.bind_param('type', type) unless type.nil?
+      # Загружаем в запрос тип вместо плейсхолдера :type, добавляем лук :)
+      statement.bind_param('type', type) unless type.nil?
 
-      # # Загружаем лимит вместо плейсхолдера :limit, добавляем морковь :)
-      # statement.bind_param('limit', limit) unless limit.nil?
+      # Загружаем лимит вместо плейсхолдера :limit, добавляем морковь :)
+      statement.bind_param('limit', limit) unless limit.nil?
 
-      # # Выполняем запрос и записываем его в переменную result. Там будет массив
-      # # с данными из базы.
-      # result = statement.execute!
+      # Выполняем запрос и записываем его в переменную result. Там будет массив
+      # с данными из базы.
+      result = statement.execute!
 
-      # # Закрываем запрос
-      # statement.close
+      # Закрываем запрос
+      statement.close
 
-      # # Закрываем базу
-      # db.close
+      # Закрываем базу
+      db.close
 
-      # # Возвращаем результат
-      # result
+      # Возвращаем результат
+      result
     end
   end
 
