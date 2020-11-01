@@ -130,7 +130,7 @@ class Post
 
       # Формируем запрос в базу с нужными условиями: начнем с того, что нам
       # нужны все посты, включая идентификатор из таблицы posts.
-      query = 'SELECT rowid, * FROM posts '
+      query = 'SELECT * FROM posts '
 
       # Если задан тип постов, надо добавить условие на значение поля type
       query += 'WHERE type = :type ' unless type.nil?
