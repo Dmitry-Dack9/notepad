@@ -18,4 +18,12 @@ class Memo < Post
 
     return @text.unshift(time_string)
   end
+
+  def to_db_hash
+    # Вызываем родительский метод to_db_hash ключевым словом super. К хэшу,
+    # который он вернул добавляем специфичные для этого класса поля методом
+    # Hash#merge. Массив строк делаем одной большой строкой, разделенной
+    # символами перевода строки.
+    super.merge('text' => @text.join('\n'))
+  end
 end

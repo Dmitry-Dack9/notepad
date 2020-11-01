@@ -1,4 +1,8 @@
+require "sqlite3"
+
 class Post
+  @@SQLITE_DB_FILE = "notepad.sqlite"
+
   def initialize
     @created_at = Time.now
     @text = nil
@@ -28,10 +32,33 @@ class Post
   end
 
   def self.post_types
-    [Memo, Link, Task]
+    {"Memo" => Memo, "Link" => Link, "Task" => Task}
   end
 
-  def self.create(type_index)
-    return post_types[type_index].new
+  def self.create(type)
+    post_types[type].new
+  end
+
+  def save_to_db
+    db = SQLite3::Database.open(@@SQLITE_DB_FILE)
+
+    db.results_as_hash = true
+
+    db.execute(
+      "INSERT INTO posts (#{to_db_hash.keys.join(",")}) VALUES (#{("?," * to_db_hash.keys.size).chomp(",")})", to_db_hash.values
+      )
+
+    last_insert_row_id = db.last_insert_row_id
+
+    db.close
+
+    last_insert_row_id
+  end
+
+  def to_db_hash
+    {
+      "type" => self.class.name,
+      "created_at" => @created_at.to_s
+    }
   end
 end
