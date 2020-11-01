@@ -1,15 +1,15 @@
-if Gem.win_platform?
-  Encoding.default_external = Encoding.find(Encoding.locale_charmap)
-  Encoding.default_internal = __ENCODING__
-  [STDIN, STDOUT].each do |io|
-    io.set_encoding(Encoding.default_external, Encoding.default_internal)
-  end
-end
+# if Gem.win_platform?
+#   Encoding.default_external = Encoding.find(Encoding.locale_charmap)
+#   Encoding.default_internal = __ENCODING__
+#   [STDIN, STDOUT].each do |io|
+#     io.set_encoding(Encoding.default_external, Encoding.default_internal)
+#   end
+# end
 
-require_relative "lib/post"
-require_relative "lib/link"
-require_relative "lib/memo.rb"
-require_relative "lib/task.rb"
+require_relative "post"
+require_relative "link"
+require_relative "memo"
+require_relative "task"
 
 puts "Привет, я твой блокнот! Версия 2 + Sqlite"
 puts "Что хотите записать в блокнот?"

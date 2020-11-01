@@ -33,4 +33,13 @@ class Task < Post
                    }
     )
   end
+
+  # Метод load_data у Задачи считывает дополнительно due_date задачи
+  def load_data(data_hash)
+    # родительский метод load_data для общих полей.
+    super
+
+    # достаю из хэша специфичное только для задачи значение due_date
+    @due_date = Date.parse(data_hash['due_date'])
+  end
 end

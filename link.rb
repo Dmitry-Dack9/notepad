@@ -22,4 +22,11 @@ class Link < Post
   def to_db_hash
     super.merge('text' => @text, 'url' => @url)
   end
+
+  def load_data(data_hash)
+    super
+
+    # Теперь достаем из хэша специфичное только для ссылки значение url
+    @url = data_hash['url']
+  end
 end

@@ -26,4 +26,11 @@ class Memo < Post
     # символами перевода строки.
     super.merge('text' => @text.join('\n'))
   end
+
+  def load_data(data_hash)
+    super
+
+    # Теперь достаю из хэша специфичное только для задачи значение text
+    @text = data_hash['text'].split('\n')
+  end
 end
