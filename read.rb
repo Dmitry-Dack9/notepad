@@ -33,17 +33,13 @@ OptionParser.new do |opt|
   # метод parse, чтобы он заполнил наш хэш options в соответствии с правилами.
 end.parse!
 
-result = Post.find(options[:limit], options[:type], options[:id])
-
-if result.is_a? Post
-  # Если результат — это один объект класса Post, значит выводим его
+if options[:id]
+  result = Post.find_by_id(options[:id])
   puts "Запись #{result.class.name}, id = #{options[:id]}"
-
-  # Получим строки для поста с помощью метода to_string и выведем их на экран
   result.to_strings.each { |line| puts line }
 else
+  result = Post.find_all(options[:limit], options[:type])
   # Если результат — это не один пост, а сразу несколько, показываем таблицу
-
   # Сначала — напечатаем шапку таблицы с названиями полей
   print '| id                 '
   print '| @type              '
@@ -53,7 +49,7 @@ else
   print '| @due_date          '
   print '|'
 
-  # Теперь для каждой строки из результатов выведем её в нужном формате
+    # Теперь для каждой строки из результатов выведем её в нужном формате
   result.each do |row|
     # Начинаем с пустой строки
     puts
@@ -76,3 +72,8 @@ else
 
   puts
 end
+
+
+
+
+
