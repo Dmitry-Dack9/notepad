@@ -12,7 +12,7 @@ require_relative "memo"
 require_relative "task"
 
 puts "Привет, я твой блокнот! Версия 2 + Sqlite"
-puts "Что хотите записать в блокнот?"
+puts "Что хотите записать?"
 
 choises = Post.post_types.keys
 
