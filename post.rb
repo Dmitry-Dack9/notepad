@@ -69,11 +69,14 @@ class Post
       # быть преобразованы в хэш руби.
       db.results_as_hash = true
 
-      # Выполняем наш запрос, вызывая метод execute у объекта db. Он возвращает
-      # массив результатов, в нашем случае из одного элемента, т.к. только одна
-      # запись в таблице будет соответствовать условию «идентификатор
-      # соответствует заданному». Результат сохраняем в переменную result.
+    # Начинаем аккуратно тянуть данные из базы методом execute
+    begin
       result = db.execute('SELECT * FROM posts WHERE  rowid = ?', id)
+    rescue SQLite3::SQLException => error
+      # Если возникла ошибка, пишем об этом пользователю и выводим текст ошибки
+      puts "Не удалось выполнить запрос в базе #{SQLITE_DB_FILE}"
+      abort error.message
+    end
 
       # Закрываем соединение с базой. Оно нам больше не нужно, результат запроса
       # у нас сохранен. Обратите внимание, что это аналогично файлам. Важно
@@ -143,8 +146,17 @@ class Post
       # самом конце
       query += 'LIMIT :limit ' unless limit.nil?
 
-      # Готовим запрос в базу, как плов :)
-      statement = db.prepare query
+      # # Готовим запрос в базу, как плов :)
+      # statement = db.prepare query
+
+      # Перед подготовкой запроса поставим конструкцию begin, чтобы поймать
+      # возможные ошибки например, если в базе нет таблицы posts.
+      begin
+        statement = db.prepare query
+      rescue SQLite3::SQLException => error
+        puts "Не удалось выполнить запрос в базе #{SQLITE_DB_FILE}"
+        abort error.message
+      end
 
       # Загружаем в запрос тип вместо плейсхолдера :type, добавляем лук :)
       statement.bind_param('type', type) unless type.nil?
