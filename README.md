@@ -1,11 +1,8 @@
 # Notepad (Блокнот)
-Small terminal application for different notes (could be changed from Memo, Todo and Link).
+Small terminal application for different notes (could be chosen from Memo, Todo or Link).
 
 # Screenshot
 ![Application screenshot](https://github.com/dmentry/notepad/blob/master/notepad.jpg)
-
-# System
-Ruby 2.7.0
 
 # Required
 Ruby
@@ -25,4 +22,4 @@ ruby read.rb [options]
 ruby read.rb -h
 
 # Notes storage
-All the notes are recorded in notepad.sqlite in the root directory of the application.
+All the notes are recorded in `notepad.sqlite` in the root directory of the application.
